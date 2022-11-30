@@ -15,16 +15,18 @@ project "Walnut"
       "../vendor/glfw/include",
       "../vendor/stb_image",
 
-      "%{IncludeDir.VulkanSDK}",
+      --"%{IncludeDir.VulkanSDK}",
+	  "%{IncludeDir.OpenGL}",
       "%{IncludeDir.glm}",
+	  "%{IncludeDir.assimp}",
    }
 
    links
    {
        "ImGui",
        "GLFW",
-
-       "%{Library.Vulkan}",
+	   --"assimp",
+       --"%{Library.Vulkan}",
    }
 
    targetdir ("bin/" .. outputdir .. "/%{prj.name}")

@@ -8,9 +8,6 @@
 #include <functional>
 
 #include "imgui.h"
-#include "vulkan/vulkan.h"
-
-void check_vk_result(VkResult err);
 
 struct GLFWwindow;
 
@@ -48,17 +45,14 @@ namespace Walnut {
 		float GetTime();
 		GLFWwindow* GetWindowHandle() const { return m_WindowHandle; }
 
-		static VkInstance GetInstance();
-		static VkPhysicalDevice GetPhysicalDevice();
-		static VkDevice GetDevice();
-
-		static VkCommandBuffer GetCommandBuffer(bool begin);
-		static void FlushCommandBuffer(VkCommandBuffer commandBuffer);
-
-		static void SubmitResourceFree(std::function<void()>&& func);
 	private:
 		void Init();
 		void Shutdown();
+		void StartNewAppFrame();
+		void ApplyMenubarCallback();
+		void StartDockspace();
+		void EndDockspace();
+		void RenderAppFrame();
 	private:
 		ApplicationSpecification m_Specification;
 		GLFWwindow* m_WindowHandle = nullptr;
@@ -70,6 +64,7 @@ namespace Walnut {
 
 		std::vector<std::shared_ptr<Layer>> m_LayerStack;
 		std::function<void()> m_MenubarCallback;
+
 	};
 
 	// Implemented by CLIENT

@@ -14,14 +14,24 @@ project "WalnutApp"
 
       "../Walnut/src",
 
-      "%{IncludeDir.VulkanSDK}",
+      --"%{IncludeDir.VulkanSDK}",
+	  "%{IncludeDir.OpenGL}",
       "%{IncludeDir.glm}",
+	  "%{IncludeDir.assimp}",
    }
 
     links
     {
-        "Walnut"
+        "Walnut",
+		"opengl32.lib",
+		"glew32.lib",
     }
+
+	libdirs
+	{
+	    "../vendor/GL/Lib",
+		"../vendor/assimp/lib",
+	}
 
    targetdir ("../bin/" .. outputdir .. "/%{prj.name}")
    objdir ("../bin-int/" .. outputdir .. "/%{prj.name}")
@@ -33,11 +43,19 @@ project "WalnutApp"
    filter "configurations:Debug"
       defines { "WL_DEBUG" }
       runtime "Debug"
+	  links
+	  {
+	      "assimp-vc143-mtd.lib",
+	  }
       symbols "On"
 
    filter "configurations:Release"
       defines { "WL_RELEASE" }
       runtime "Release"
+      links
+      {
+          "assimp-vc143-mt.lib",
+      }
       optimize "On"
       symbols "On"
 
