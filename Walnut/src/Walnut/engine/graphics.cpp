@@ -81,21 +81,22 @@ bool Graphics::Initialize(int width, int height)
   m_vertPos = m_shader->GetAttribLocation("v_position");
   m_vertCol = m_shader->GetAttribLocation("v_color");
 
-  m_sun = new Pyramid();
+  m_sun = new Sphere(100, glm::vec3(1.f, 1.f, .0f));
   m_sun->Initialize(m_vertPos, m_vertCol);
   m_sun->doRandomPositionOrientation();
 
-  m_planet = new Cube();
+  m_planet = new Sphere(100);
   m_planet->Initialize(m_vertPos, m_vertCol);
-  
-  m_moon1 = new Cube();
-  m_moon1->Initialize(m_vertPos, m_vertCol);
 
-  m_moon2 = new Cube();
-  m_moon2->Initialize(m_vertPos, m_vertCol);
-
-  m_starship = new Mesh("starship.obj");
+  m_starship = new Mesh("assets/starship.obj");
   m_starship->Initialize(m_vertPos, m_vertCol);
+
+  m_gizmoX = new Mesh("assets/Gizmo.obj", glm::vec3(0.0f, 1.0f, 0.0f));
+  m_gizmoX->Initialize(m_vertPos, m_vertCol);
+  m_gizmoY = new Mesh("assets/Gizmo.obj", glm::vec3(0.0f, 0.0f, 1.0f));
+  m_gizmoY->Initialize(m_vertPos, m_vertCol);
+  m_gizmoZ = new Mesh("assets/Gizmo.obj", glm::vec3(1.0f, 0.0f, 0.0f));
+  m_gizmoZ->Initialize(m_vertPos, m_vertCol);
 
   //enable depth testing
   glEnable(GL_DEPTH_TEST);
@@ -106,7 +107,7 @@ bool Graphics::Initialize(int width, int height)
 // (Part 1): See aforementioned in header comment
 void Graphics::Update(float dt, glm::vec3 speed)
 {
-
+    static glm::vec3 gizmoPos = glm::vec3(5.0f, 0.0f, 0.0f);
     static float angle = 0.0f;
     float dist = 4.0f;
     std::stack<glm::mat4> tstack;
@@ -121,32 +122,43 @@ void Graphics::Update(float dt, glm::vec3 speed)
     m_planet->rotation = glm::rotate(rstack.top(), 1 * dt, glm::vec3(0.0f, 1.0f, 0.0f));
     tstack.push(m_planet->translation);
     rstack.push(m_planet->rotation);
-    
-    dist = 3.0f;
-    m_moon1->scale = glm::scale(glm::mat4(1.0f), glm::vec3(.25, .25, .25));
-    m_moon1->translation = glm::translate(tstack.top(), glm::vec3(cos(angle) * dist, sin(angle) * dist, sin(0.0f) * dist));
-    m_moon1->rotation = glm::rotate(rstack.top(), 1 * dt, glm::vec3(0.0f, 1.0f, 0.0f));
-    m_moon1->rotation = glm::rotate(m_moon1->rotation, -0.5f, glm::vec3(0.0f, 0.0f, 1.0f)); //tilt 30 degrees 
 
     dist = 1.5f; 
     m_starship->scale = glm::scale(glm::mat4(1.0f), glm::vec3(.25, .25, .25));
     m_starship->translation = glm::translate(tstack.top(), glm::vec3(cos(angle) * dist, sin(0.0f) * dist, sin(angle)) * dist);
-    m_starship->rotation = glm::rotate(rstack.top(), 1 * dt, glm::vec3(0.0f, 1.0f, 0.0f));
-    m_starship->rotation = glm::rotate(m_starship->rotation, -0.5f, glm::vec3(0.0f, 0.0f, 1.0f)); //tilt 30 degrees 
-    
+    m_starship->rotation = glm::rotate(glm::mat4(1.0f), -1.0f * angle, glm::vec3(.0f, 1.0f, 0.0f)); //turn with the planet
+    m_starship->rotation = glm::rotate(m_starship->rotation, -1.5f, glm::vec3(.0f, 1.0f, 0.0f)); // rotate model forward so ship faces forward
+    m_starship->rotation = glm::rotate(m_starship->rotation, .5f, glm::vec3(1.0f, 0.0f, .0f)); //tilt 30 degree towards planet
+
+    m_gizmoX->translation = glm::translate(glm::mat4(1.0f), gizmoPos);
+    m_gizmoX->scale = glm::scale(glm::mat4(1.0f), glm::vec3(.005, .005, .005));
+    m_gizmoX->rotation = glm::rotate(glm::mat4(1.0f), -1.5f, glm::vec3(0.0f, 1.0f, 0.0f));
+
+    m_gizmoY->translation = glm::translate(glm::mat4(1.0f), gizmoPos);
+    m_gizmoY->scale = glm::scale(glm::mat4(1.0f), glm::vec3(.005, .005, .005));
+    m_gizmoY->rotation = glm::mat4(1.0f);
+
+    m_gizmoZ->translation = glm::translate(glm::mat4(1.0f), gizmoPos);
+    m_gizmoZ->scale = glm::scale(glm::mat4(1.0f), glm::vec3(.005, .005, .005));
+    m_gizmoZ->rotation = glm::rotate(glm::mat4(1.0f), 1.5f, glm::vec3(0.0f, 0.0f, 1.0f));
+
     m_sun->Update();
     m_planet->Update();
-    m_moon1->Update();
     m_starship->Update();
+
+    m_gizmoX->Update();
+    m_gizmoY->Update();
+    m_gizmoZ->Update();
 
     angle += (1.0f * dt);
     if (angle >= 2 * 3.14159) angle = 0.0f;
 }
+
 // (Part 1): See aforementioned in header comment
 void Graphics::Render()
 {
   //clear the screen
-  glClearColor(0.0, 0.0, 0.0, 1.0);
+  glClearColor(0.01, 0.0, 0.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   // Start the correct program
@@ -159,12 +171,19 @@ void Graphics::Render()
   std::stack<Object*> renderStack;
   renderStack.push(m_sun);
   renderStack.push(m_planet);
-  renderStack.push(m_moon1);
   renderStack.push(m_starship);
+
+  renderStack.push(m_gizmoX);
+  renderStack.push(m_gizmoY);
+  renderStack.push(m_gizmoZ);
+
   while (!renderStack.empty())
   {
-      glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(renderStack.top()->GetModel()));
-      renderStack.top()->Render(m_vertPos, m_vertCol);
+      if (renderStack.top() != NULL)
+      {
+          glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(renderStack.top()->GetModel()));
+          renderStack.top()->Render(m_vertPos, m_vertCol);
+      }
       renderStack.pop();
   }
   // Get any errors from OpenGL
@@ -187,7 +206,7 @@ void Graphics::ComputeTransforms(double dt, std::vector<float> speed, std::vecto
 
 // (Part 1): See aforementioned in header comment
 Object* Graphics::getInteractWith() {
-    return m_triangle;
+    return nullptr;
 }
 // (Part 1): See aforementioned in header comment
 std::string Graphics::ErrorString(GLenum error)

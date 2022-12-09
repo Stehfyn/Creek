@@ -19,6 +19,7 @@ class Object
     void Initialize(GLint posAttribLoc, GLint colAttribLoc);
     // (Part 1): In this implementation, we can update any of our matrices through this as process a new frame, a triangle only updates its position, while a cube updates its position and its rotation
     virtual void Update();
+    virtual void Update(glm::mat4 in);
     // (Part 1): All the steps to actually draw the object. Executed each frame, We bind our previously generated vao again, then we bind our respective vertex and index buffers (VBOs) again,
     // then enable our vertex attribute arrays for our position and color respectively. Initialize() sets up the what, where, and how in the pipeline between the cpu and gpu,
     // while this just "switches it all on" when we need it. After switching on our vao, its vbos, and the array attributes, we can make draw calls(hey gpu, do it like this!). We use
@@ -49,9 +50,12 @@ class Object
     GLuint VB;
     GLuint IB;
 protected:
+
+    //pa3
     std::vector<Vertex> Vertices;
     std::vector<unsigned int> Indices;
     float angle;
+    //pa4
     std::vector<glm::vec3> vertices;
     std::vector<glm::vec3> colors;
     std::vector<glm::vec3> normals;

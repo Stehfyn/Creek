@@ -20,10 +20,6 @@ void Pyramid::createVertices()
 	};
 }
 //OpenGL and GLM are column-major by default, so instead of transposition we just do t*r*s
-void Pyramid::Update()
-{
-	model = translation * rotation * scale;
-}
 void Pyramid::doRandomPositionOrientation()
 {
 	//(Part 2): random translation 

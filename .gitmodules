@@ -4,9 +4,18 @@
 [submodule "vendor/imgui"]
 	path = vendor/imgui
 	url = https://github.com/Stehfyn/imgui.git
-[submodule "vendor/assimp"]
-	path = vendor/assimp
-	url = https://github.com/Stehfyn/assimp.git
 [submodule "vendor/glfw"]
 	path = vendor/glfw
 	url = https://github.com/Stehfyn/glfw.git
+[submodule "vendor/assimp"]
+	path = vendor/assimp
+	url = https://github.com/Stehfyn/assimp
+[submodule "vendor/stb"]
+	path = vendor/stb
+	url = https://github.com/nothings/stb
+[submodule "vendor/SOIL2"]
+	path = vendor/SOIL2
+	url = https://github.com/Stehfyn/SOIL2.git
+[submodule "vendor/glew"]
+	path = vendor/glew
+	url = https://github.com/Stehfyn/glew

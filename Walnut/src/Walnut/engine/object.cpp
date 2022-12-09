@@ -47,6 +47,12 @@ void Object::Update()
 	//To Do: Extra credit / Grad Only
 	//	Make the object move in a circle around the origin
 }
+void Object::Update(glm::mat4 in)
+{
+
+	model = in;
+
+}
 // (Part 1): See aforementioned in header comment
 glm::mat4 Object::GetModel()
 {

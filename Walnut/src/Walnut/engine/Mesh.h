@@ -1,8 +1,8 @@
 #pragma once
 #include "object.h"
-#include "../assimp/Importer.hpp"
-#include "../assimp/scene.h"
-#include "../assimp/postprocess.h"
+#include "assimp/Importer.hpp"
+#include "assimp/scene.h"
+#include "assimp/postprocess.h"
 
 class Mesh : public Object
 {
@@ -19,3 +19,4 @@ public:
 	bool loadModelFromFile(const char* path);
 	bool loadModelFromFile(const char* path, glm::vec3 col);
 };
+

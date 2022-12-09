@@ -56,7 +56,3 @@ void Cube::doRandomPositionOrientation()
 	float rorientationy = glm::linearRand(0.0f, 1.0f);
 	rotation = glm::rotate(glm::mat4(1.0f), rangle, glm::vec3(rorientationx, rorientationy, rorientationz));
 }
-void Cube::Update()
-{
-	model = translation * rotation * scale;
-}

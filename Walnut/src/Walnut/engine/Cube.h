@@ -12,7 +12,6 @@ class Cube : public Object
 	void doRandomPositionOrientation();
 	// (Part 2): Update our object on each frame, dt as a parameter but goes unused since I didn't fix the time-step.
 	// Cube will update rotation and translation, and assumes our z-axis is the other axis in the plane that makes up the floor (y is to the sky)
-	void Update() override;
 
 	// member that dictates rotation, controlled by processInput() in engine.h/cpp
 	bool m_Clockwise = true;

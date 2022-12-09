@@ -1,6 +1,6 @@
 
 #include "Application.h"
-#include <Include/glew.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <GL/GLU.h>
 //
@@ -20,6 +20,7 @@
 // Emedded font
 #include "ImGui/Roboto-Regular.embed"
 
+#include "stb_image.h"
 
 extern bool g_ApplicationRunning;
 
@@ -93,6 +94,7 @@ namespace Walnut {
 		const char* glsl_version = "#version 130";
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+		//glfwWindowHint(GLFW_DECORATED, 0);
 		//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
 		//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
@@ -102,7 +104,7 @@ namespace Walnut {
 			std::exit(1);
 
 		glfwMakeContextCurrent(m_WindowHandle);
-		glfwSwapInterval(1);
+		glfwSwapInterval(0);
 
 		GLenum err = glewInit();
 		if (GLEW_OK != err)
@@ -149,8 +151,18 @@ namespace Walnut {
 		// Load default font
 		ImFontConfig fontConfig;
 		fontConfig.FontDataOwnedByAtlas = false;
-		ImFont* robotoFont = io.Fonts->AddFontFromMemoryTTF((void*)g_RobotoRegular, sizeof(g_RobotoRegular), 20.0f, &fontConfig);
-		io.FontDefault = robotoFont;
+		//ImFont* robotoFont = io.Fonts->AddFontFromMemoryTTF((void*)g_RobotoRegular, sizeof(g_RobotoRegular), 20.0f, &fontConfig);
+		ImFont* myriadPro = io.Fonts->AddFontFromFileTTF("assets/MyriadPro-Light.ttf", 20.0f);
+		//io.FontDefault = robotoFont;
+		io.FontDefault = myriadPro;
+
+		int ww, hh, c;
+		unsigned char* p = stbi_load("assets/unr-256x256.png", &ww, &hh, &c, 4);
+		GLFWimage icon[1];
+		icon[0].width = ww;
+		icon[0].height = hh;
+		icon[0].pixels = p;
+		glfwSetWindowIcon(m_WindowHandle, 1, icon);
 	}
 
 	void Application::Shutdown()
@@ -206,12 +218,14 @@ namespace Walnut {
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-
+		
 		// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background
 		// and handle the pass-thru hole, so we ask Begin() to not render a background.
 		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
 			window_flags |= ImGuiWindowFlags_NoBackground;
 
+		//dockspace_flags |= ImGuiDockNodeFlags_AutoHideTabBar;
+		//window_flags |= ImGuiWindowFlags_NoBackground;
 		// Important: note that we proceed even if Begin() returns false (aka window is collapsed).
 		// This is because we want to keep our DockSpace() active. If a DockSpace() is inactive,
 		// all active windows docked into it will lose their parent and become undocked.

@@ -12,8 +12,10 @@ using namespace std;
 #include "cube.h"
 #include "triangle.h"
 #include "Pyramid.h"
-#include <stack>
+#include "Sphere.h"
 #include "Mesh.h"
+#include <stack>
+
 class Graphics
 {
   public:
@@ -38,10 +40,12 @@ class Graphics
     // (Part 1): Unused, returns base object pointer of our triangle member.
     Object* getInteractWith();
     // (Part 1): Explicit get<Object>() methods that return pointers our members. definitely an anti-pattern at the moment but for right now it just works™
-    Triangle* getTriangle() { return m_triangle; }
-    Cube* getCube() { return m_planet; }
+    Camera* getCamera() { return m_camera; }
+
   private:
     std::string ErrorString(GLenum error);
+
+    stack<glm::mat4> modelStack;
 
     Camera *m_camera;
     Shader *m_shader;
@@ -52,13 +56,12 @@ class Graphics
     GLint m_vertPos;
     GLint m_vertCol;
 
+    Sphere* m_sun;
+    Sphere* m_planet;
     Mesh* m_starship;
-    Triangle* m_triangle;
-    Cube* m_planet;
-    Cube* m_moon1;
-    Cube* m_moon2;
-
-    Pyramid* m_sun;
+    Mesh* m_gizmoX;
+    Mesh* m_gizmoY;
+    Mesh* m_gizmoZ;
 };
 
 #endif /* GRAPHICS_H */

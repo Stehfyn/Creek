@@ -1,5 +1,5 @@
 #pragma once
-
+//#define GLEW_STATIC
 #include "Layer.h"
 
 #include <string>
@@ -15,7 +15,7 @@ namespace Walnut {
 
 	struct ApplicationSpecification
 	{
-		std::string Name = "Walnut App";
+		std::string Name = "Creek";
 		uint32_t Width = 1600;
 		uint32_t Height = 900;
 	};
@@ -30,7 +30,6 @@ namespace Walnut {
 
 		void Run();
 		void SetMenubarCallback(const std::function<void()>& menubarCallback) { m_MenubarCallback = menubarCallback; }
-		
 		template<typename T>
 		void PushLayer()
 		{

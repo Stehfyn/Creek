@@ -3,9 +3,14 @@ project "Walnut"
    language "C++"
    cppdialect "C++17"
    targetdir "bin/%{cfg.buildcfg}"
-   staticruntime "off"
+   staticruntime "on"
 
-   files { "src/**.h", "src/**.cpp" }
+   files 
+   { 
+      "premake5.lua",
+      "src/**.h", 
+      "src/**.cpp" 
+   }
 
    includedirs
    {
@@ -13,20 +18,25 @@ project "Walnut"
 
       "../vendor/imgui",
       "../vendor/glfw/include",
-      "../vendor/stb_image",
-
       --"%{IncludeDir.VulkanSDK}",
-	  "%{IncludeDir.OpenGL}",
       "%{IncludeDir.glm}",
-	  "%{IncludeDir.assimp}",
+	   "%{IncludeDir.assimp}",
+	   "%{IncludeDir.stb}",
+      "%{IncludeDir.glew}"
    }
 
    links
    {
        "ImGui",
        "GLFW",
-	   --"assimp",
+	   "assimp",
+      "GLEW",
        --"%{Library.Vulkan}",
+   }
+
+   defines
+   {
+      "GLEW_STATIC"
    }
 
    targetdir ("bin/" .. outputdir .. "/%{prj.name}")

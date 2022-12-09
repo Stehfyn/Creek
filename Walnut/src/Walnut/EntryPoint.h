@@ -5,7 +5,8 @@
 extern Walnut::Application* Walnut::CreateApplication(int argc, char** argv);
 bool g_ApplicationRunning = true;
 
-namespace Walnut {
+namespace Walnut 
+{
 
 	int Main(int argc, char** argv)
 	{
@@ -21,7 +22,7 @@ namespace Walnut {
 
 }
 
-#ifdef WL_DIST
+#ifdef WL_RELEASE || WL_DIST
 
 #include <Windows.h>
 
@@ -31,7 +32,6 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
 }
 
 #else
-
 int main(int argc, char** argv)
 {
 	return Walnut::Main(argc, argv);
