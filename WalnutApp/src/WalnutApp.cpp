@@ -14,7 +14,7 @@ Walnut::Application* Walnut::CreateApplication(int argc, char** argv)
 	spec.Name = "Assignment 5 - Stephen Foster";
 	Walnut::Application* app = new Walnut::Application(spec);
 
-	app->PushLayer<SceneLayer1>();
+	app->PushLayer<SceneLayer>();
 	//app->PushLayer<DemoLayer>();
 
 
