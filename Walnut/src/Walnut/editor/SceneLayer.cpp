@@ -5,9 +5,9 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtc/random.hpp>
 
-SceneLayer1::SceneLayer1() : Walnut::Layer()
+SceneLayer::SceneLayer() : Walnut::Layer()
 {
-	//m_SceneView = new SceneView();
+
 
 	m_FramebufferResolutionComboOptions = { {1920, 1080}, {1768, 992}, {1600, 900}, {1366, 768}, {1280, 720}, {1176, 664}, {1152, 648}, {1024, 576} };
 	m_FramebufferResolutionComboSelected = m_FramebufferResolutionComboOptions.at(0);
@@ -22,7 +22,7 @@ SceneLayer1::SceneLayer1() : Walnut::Layer()
 	m_MouseWheel = ImGui::GetIO().MouseWheel;
 }
 
-void SceneLayer1::DoSceneEditBar()
+void SceneLayer::DoSceneEditBar()
 {
 	ImGui::PushItemWidth(120);
 	
@@ -62,7 +62,7 @@ void SceneLayer1::DoSceneEditBar()
 
 }
 
-void SceneLayer1::OnUpdate(float ts)
+void SceneLayer::OnUpdate(float ts)
 {
 	//m_SceneView->OnUpdate(ts);
 	float camSpeed = 3.0f * ts;
@@ -131,7 +131,7 @@ void SceneLayer1::OnUpdate(float ts)
 
 
 }
-void SceneLayer1::OnUIRender()
+void SceneLayer::OnUIRender()
 {
 	ImGuiWindowClass window_class;
 	//window_class.DockingAllowUnclassed = true;
@@ -173,20 +173,20 @@ void SceneLayer1::OnUIRender()
 	}
 	ImGui::End();
 }
-bool SceneLayer1::ImVec2IsInRect(ImVec2& vec, std::pair<ImVec2, ImVec2>& rect)
+bool SceneLayer::ImVec2IsInRect(ImVec2& vec, std::pair<ImVec2, ImVec2>& rect)
 {
 	if (vec.x >= rect.first.x && vec.x <= rect.second.x)
 		if (vec.y >= rect.first.y && vec.y <= rect.second.y)
 			return true;
 	return false;
 }
-std::string SceneLayer1::ImVec2ToString(ImVec2& vec)
+std::string SceneLayer::ImVec2ToString(ImVec2& vec)
 {
 	std::stringstream conversion;
 	conversion << vec.x << ", " << vec.y;
 	return conversion.str();
 }
-std::pair<ImVec2, ImVec2> SceneLayer1::GetScreenFill()
+std::pair<ImVec2, ImVec2> SceneLayer::GetScreenFill()
 {
 	ImVec2 pos = ImGui::GetCursorScreenPos();
 	ImVec2 avail = ImGui::GetContentRegionAvail();
@@ -197,7 +197,7 @@ std::pair<ImVec2, ImVec2> SceneLayer1::GetScreenFill()
 
 	return { pos, filled };
 }
-std::pair<ImVec2, ImVec2> SceneLayer1::GetScreenMaintainAspectRatio()
+std::pair<ImVec2, ImVec2> SceneLayer::GetScreenMaintainAspectRatio()
 {
 	ImVec2 pos = ImGui::GetCursorScreenPos();
 	ImVec2 avail = ImGui::GetContentRegionAvail();

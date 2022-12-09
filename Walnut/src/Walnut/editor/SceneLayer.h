@@ -13,10 +13,10 @@
 #include <sstream>
 #include <utility>
 
-class SceneLayer1 : public Walnut::Layer
+class SceneLayer : public Walnut::Layer
 {
 public:
-	SceneLayer1();
+	SceneLayer();
 	virtual void OnUpdate(float ts);
 	virtual void OnUIRender() override;
 
